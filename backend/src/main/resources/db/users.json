@@ -1,0 +1,18 @@
+[
+  {
+    "id": "64d0f1b2c3a4e5f6a7b8c9d1",
+    "email": "admin@gmail.com",
+    "password": "$2a$10$Vq7kPWnWwz7isGGE/8gxJOLdZCRFsBzqU6swEprp66kGvK1UdbQjy",
+    "name": "Administrator",
+    "role": "ROLE_ADMIN",
+    "createdAt": "2024-07-15T00:00:00"
+  },
+  {
+    "id": "64d0f1b2c3a4e5f6a7b8c9d2",
+    "email": "siva@gmail.com",
+    "password": "$2a$10$FjomyZihHtoW7sUFuypX2u3p.orW5nuYOpNA8iK9FPAp1KeFY2iyi",
+    "name": "Siva",
+    "role": "ROLE_USER",
+    "createdAt": "2024-07-15T00:00:00"
+  }
+]

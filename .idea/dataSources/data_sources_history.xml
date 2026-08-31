@@ -1,0 +1,23 @@
+<DataSourcesHistory>
+  <DataSourceFromHistory isRemovedFromProject="false">
+    <data-source source="LOCAL" name="@localhost" uuid="f005edbd-c3d7-4266-a2fe-803b48631abe">
+      <database-info product="Mongo DB" version="8.3.7" jdbc-version="4.2" driver-name="MongoDB JDBC Driver" driver-version="1.23" dbms="MONGO" exact-version="8.3.7" exact-driver-version="1.21" />
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+      <driver-ref>mongo.4</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://localhost:27017</jdbc-url>
+      <secret-storage>master_key</secret-storage>
+      <auth-provider>no-auth</auth-provider>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema">
+            <name qname="@" />
+            <name qname="local" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </DataSourceFromHistory>
+</DataSourcesHistory>
