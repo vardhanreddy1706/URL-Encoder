@@ -21,5 +21,6 @@ public record ShorturlResponse(
                 shorturl.getClickCount()
         );
     }
+    
 }
 

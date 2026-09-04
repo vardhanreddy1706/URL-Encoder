@@ -46,4 +46,11 @@ public class ShorturlController {
         .body(ShorturlResponse.from(result));
     }
 
+    @GetMapping("/publicUrls")
+    public ResponseEntity<Page<ShorturlResponse>> publicUrls(Pageable pageable){
+      Page<ShorturlResponse> response=  shorturlService.getPublicUrls(pageable)
+      .map(ShorturlResponse::from);
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -2,6 +2,9 @@ package com.vardhanreddy1706.URLEncoder.Service;
 
 import com.vardhanreddy1706.URLEncoder.Models.Shorturl;
 import com.vardhanreddy1706.URLEncoder.Repository.ShorturlRepository;
+
+import org.springframework.boot.data.autoconfigure.web.DataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -45,5 +48,9 @@ public class ShorturlService {
         } while (shorturlRepository.existsByShortKey(shortKey));
 
         return shortKey;
+    }
+
+    public Page<Shorturl> publicUrls(Pageable pageable){
+        return shorturlRepository.findByIsPrivateFalse(pageable);
     }
 }
