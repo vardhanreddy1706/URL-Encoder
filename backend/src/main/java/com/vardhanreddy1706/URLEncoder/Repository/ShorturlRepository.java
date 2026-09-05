@@ -4,8 +4,8 @@ import com.vardhanreddy1706.URLEncoder.Models.Shorturl;
 
 import java.util.Optional;
 
-import org.springframework.boot.data.autoconfigure.web.DataWebProperties.Pageable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ShorturlRepository extends MongoRepository<Shorturl,String> {
@@ -13,7 +13,7 @@ public interface ShorturlRepository extends MongoRepository<Shorturl,String> {
 
     Optional<Shorturl> findByOriginalUrl(String originalUrl);
 
-    Page<ShorturlResponse> findByIsPrivateFalse(Pageable pageable);
+    Page<Shorturl> findByIsPrivateFalse(Pageable pageable);
 }
 
 

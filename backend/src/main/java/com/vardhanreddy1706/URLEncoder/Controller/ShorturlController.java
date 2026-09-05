@@ -11,8 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 @RestController
 @RequestMapping("api/v1")
 public class ShorturlController {
@@ -24,6 +25,16 @@ public class ShorturlController {
     @GetMapping("/")
     public String hello(){
         return "hello world";
+    }
+
+
+    //helper method
+    private String buildShortUrl(String shortKey){
+      return ServletUriComponentsBuilder
+      .fromCurrentContextPath()
+      .path("/{shortKey}")
+      .buildAndExpand(shortKey)
+      .toUriString();
     }
 
     @GetMapping("/getUrl/{id}")
@@ -41,9 +52,13 @@ public class ShorturlController {
       }
 
       Shorturl result = shorturlService.createShorturl(req.originalUrl());
+
+        
+      String shortUrl = buildShortUrl(result.getShortKey());
+      
         return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .body(ShorturlResponse.from(result));
+        .status(URI.create(shortUrl))
+        .body(ShorturlResponse.from(result,shortUrl));
     }
 
     @GetMapping("/publicUrls")
