@@ -11,8 +11,22 @@ public record ShorturlResponse(
          String shortUrl,
         String originalUrl,
         LocalDateTime createdAt,
-        Long clickCount
+        Long clickCount,
+                LocalDateTime expiresAt
+
 ) {
+     public static ShorturlResponse from(Shorturl shorturl) {
+        String shortUrl = shorturl.getShortKey();
+        return new ShorturlResponse(
+                shorturl.getId(),
+                shorturl.getShortKey(),
+                shortUrl,
+                shorturl.getOriginalUrl(),
+                shorturl.getCreatedAt(),
+                shorturl.getClickCount(),
+                shorturl.getExpiresAt()
+        );
+    }
     public static ShorturlResponse from(Shorturl shorturl,   String shortUrl) {
         return new ShorturlResponse(
                 shorturl.getId(),
@@ -20,7 +34,8 @@ public record ShorturlResponse(
                 shortUrl,
                 shorturl.getOriginalUrl(),
                 shorturl.getCreatedAt(),
-                shorturl.getClickCount()
+                shorturl.getClickCount(),
+                shorturl.getExpiresAt()
         );
     }
     

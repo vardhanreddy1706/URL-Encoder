@@ -6,6 +6,9 @@ import com.vardhanreddy1706.URLEncoder.Repository.ShorturlRepository;
 import com.vardhanreddy1706.URLEncoder.Service.ShorturlService;
 import com.vardhanreddy1706.URLEncoder.DTO.CreateShortUrlRequest;
 import jakarta.validation.Valid;
+
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +45,12 @@ public class ShorturlController {
         return shorturlService.getShorturl(id);
     }
 
+      @GetMapping("/shortKey")
+    public Shorturl getByShortKey(@RequestParam String ShortKey){
+        return shorturlService.getByShortKey(ShortKey);
+    }
+
+
     @PostMapping("/short-urls")
     public ResponseEntity<?> createShorturl(@Valid @RequestBody CreateShortUrlRequest req, BindingResult bindingResult ){
 
@@ -51,13 +60,13 @@ public class ShorturlController {
         .body(bindingResult.getAllErrors());
       }
 
-      Shorturl result = shorturlService.createShorturl(req.originalUrl());
+      Shorturl result = shorturlService.createShorturl(req.originalUrl(), req.expiresAt());
 
         
       String shortUrl = buildShortUrl(result.getShortKey());
       
         return ResponseEntity
-        .status(URI.create(shortUrl))
+        .status(HttpStatus.CREATED)
         .body(ShorturlResponse.from(result,shortUrl));
     }
 
@@ -65,7 +74,8 @@ public class ShorturlController {
     public ResponseEntity<Page<ShorturlResponse>> publicUrls(Pageable pageable){
       Page<ShorturlResponse> response=  shorturlService.getPublicUrls(pageable)
       .map(ShorturlResponse::from);
-        return ResponseEntity.ok(response);
+      
+      return ResponseEntity.ok(response);
     }
 
 }

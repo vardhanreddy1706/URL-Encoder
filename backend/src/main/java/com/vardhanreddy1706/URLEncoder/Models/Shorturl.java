@@ -52,6 +52,22 @@ public class Shorturl {
         this.clickCount = 0L;
     }
 
+    public Shorturl(
+        String shortKey,
+        String originalUrl,
+        LocalDateTime expiresAt
+) {
+    this(
+            shortKey,
+            originalUrl,
+            null,
+            false,
+            expiresAt
+    );
+}
+
+
+
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
