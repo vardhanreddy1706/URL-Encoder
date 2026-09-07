@@ -27,10 +27,12 @@ public class ShorturlService {
         this.shorturlRepository = shorturlRepository;
     }
 
+    //get shortUrl with id - mongo _id
     public Shorturl getShorturl(String id) {
         return shorturlRepository.findById(id).orElseThrow(()-> new RuntimeException("Short URL not found for id: " + id));
     }
 
+    //saving the URL details in Database
     public Shorturl createShorturl(String originalUrl, LocalDateTime expiresAt) {
 
       
@@ -40,6 +42,7 @@ public class ShorturlService {
          return shorturlRepository.save(shorturl);
     }
 
+    //generate always new shortkey for same url submitted multiple times.
     private String generateUniqueShortKey() {
         String shortKey;
 
@@ -50,6 +53,7 @@ public class ShorturlService {
         return shortKey;
     }
 
+    //generating 6 - digit random key
     public String generateRandomShortkey(){
 
           String shortKey;
@@ -63,6 +67,7 @@ public class ShorturlService {
             return shortKey;
     }
 
+    //getting all public urls
     public Page<Shorturl> getPublicUrls(Pageable pageable){
         return shorturlRepository.findByIsPrivateFalse(pageable);
     }
@@ -74,6 +79,7 @@ public class ShorturlService {
         .orElseThrow(()-> new ShortUrlNotFoundException(shortKey));
     }
 
+    //updating click count
     public Shorturl getByShortKeyAndIncrementClickCount(String shortKey){
         Shorturl shorturl = getByShortKey(shortKey);
         LocalDateTime expiresAt = shorturl.getExpiresAt();
