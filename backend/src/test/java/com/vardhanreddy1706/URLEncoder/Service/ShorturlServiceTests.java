@@ -13,6 +13,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @ExtendWith(MockitoExtension.class)
 class ShorturlServiceTests {
 
@@ -27,7 +30,11 @@ class ShorturlServiceTests {
 
         ShorturlService service = new ShorturlService(shorturlRepository);
 
-        Shorturl result = service.createShorturl("https://www.sivalabs.in/");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss");
+
+        LocalDateTime date = LocalDateTime.parse("29/09/2026T23:20:30", formatter);
+
+        Shorturl result = service.createShorturl("https://www.sivalabs.in/", date);
 
         assertThat(result.getOriginalUrl()).isEqualTo("https://www.sivalabs.in/");
         assertThat(result.getShortKey()).matches("[A-Za-z0-9]{6}");

@@ -1,6 +1,7 @@
 package com.vardhanreddy1706.URLEncoder.Repository;
 
 import com.vardhanreddy1706.URLEncoder.Models.Shorturl;
+import com.vardhanreddy1706.URLEncoder.Models.User;
 
 import java.util.Optional;
 
@@ -25,6 +26,8 @@ public interface ShorturlRepository extends MongoRepository<Shorturl,String> {
     @Query("{'short_key': ?0 }")
     @Update("{ '$inc' : {'click_count' : 1}}")  
     long incrementClickCount(String shortKey);
+
+    Page<Shorturl> findByCreatedBy(User createdBy, Pageable pageable);
 }
 
 

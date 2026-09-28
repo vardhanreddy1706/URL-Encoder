@@ -2,16 +2,17 @@ package com.vardhanreddy1706.URLEncoder.Controller;
 
 import com.vardhanreddy1706.URLEncoder.DTO.ShorturlResponse;
 import com.vardhanreddy1706.URLEncoder.Models.Shorturl;
-import com.vardhanreddy1706.URLEncoder.Repository.ShorturlRepository;
+
 import com.vardhanreddy1706.URLEncoder.Service.ShorturlService;
 import com.vardhanreddy1706.URLEncoder.DTO.CreateShortUrlRequest;
 import jakarta.validation.Valid;
 
-import java.net.URI;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -40,19 +41,49 @@ public class ShorturlController {
       .toUriString();
     }
 
-    @GetMapping("/getUrl/{id}")
-    public Shorturl getUrls(@PathVariable("id") String id){
-        return shorturlService.getShorturl(id);
+   @GetMapping("/short-urls/{id}")
+public ResponseEntity<ShorturlResponse> getMyShortUrl(
+        @PathVariable String id,
+        Authentication authentication
+) {
+    Shorturl shorturl = shorturlService.getMyShortUrlById(
+            id,
+            authentication.getName()
+    );
+
+    String generatedShortUrl = buildShortUrl(
+            shorturl.getShortKey()
+    );
+
+    return ResponseEntity.ok(
+            ShorturlResponse.from(
+                    shorturl,
+                    generatedShortUrl
+            )
+    );
+}
+
+     @GetMapping("/short-urls/mine")
+    public ResponseEntity<Page<ShorturlResponse>> getMyShortUrls(Authentication authentication,Pageable pageable){
+        Page<ShorturlResponse> response =  shorturlService.getMyShorturls(authentication.getName(), pageable)
+        .map(shorturl -> ShorturlResponse.from(shorturl, buildShortUrl(shorturl.getShortKey())));
+
+        return ResponseEntity.ok(response);
     }
 
-      @GetMapping("/shortKey")
-    public Shorturl getByShortKey(@RequestParam String ShortKey){
-        return shorturlService.getByShortKey(ShortKey);
+    @DeleteMapping("/short-urls/{id}") 
+    public ResponseEntity<Void> deleteUrl(@PathVariable String id,Authentication authentication ){
+
+       shorturlService.deleteMyShorturl(id, authentication.getName());
+       
+       return ResponseEntity.noContent().build();
     }
+
+   
 
 
     @PostMapping("/short-urls")
-    public ResponseEntity<?> createShorturl(@Valid @RequestBody CreateShortUrlRequest req, BindingResult bindingResult ){
+    public ResponseEntity<?> createShorturl(@Valid @RequestBody CreateShortUrlRequest req, BindingResult bindingResult, Authentication authentication ){
 
       if(bindingResult.hasErrors()){
         return ResponseEntity
@@ -60,7 +91,7 @@ public class ShorturlController {
         .body(bindingResult.getAllErrors());
       }
 
-      Shorturl result = shorturlService.createShorturl(req.originalUrl(), req.expiresAt());
+      Shorturl result = shorturlService.createShorturl(req.originalUrl(), req.expiresAt(),authentication.getName());
 
         
       String shortUrl = buildShortUrl(result.getShortKey());

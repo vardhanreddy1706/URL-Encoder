@@ -9,4 +9,16 @@ public class ShortUrlNotFoundException extends RuntimeException {
     public ShortUrlNotFoundException(String shortKey) {
         super("Short URL not found for key: " + shortKey);
     }
+
+     public ShortUrlNotFoundException(
+            String identifierType,
+            String identifier
+    ) {
+        super(
+                "Short URL not found for "
+                        + identifierType
+                        + ": "
+                        + identifier
+        );
+    }
 }

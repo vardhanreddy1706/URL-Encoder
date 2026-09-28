@@ -16,6 +16,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @ExtendWith(MockitoExtension.class)
 class ShorturlControllerTests {
 
@@ -39,8 +42,14 @@ class ShorturlControllerTests {
                 null
         );
         savedShorturl.setId("mongo-id-1");
+        
+DateTimeFormatter formatter =
+DateTimeFormatter.ofPattern("dd/MM/yyyy'T'HH:mm:ss");
+LocalDateTime date =
+LocalDateTime.parse("29/09/2026T23:20:30", formatter);
 
-        when(shorturlService.createShorturl("https://www.sivalabs.in/"))
+        
+        when(shorturlService.createShorturl("https://www.sivalabs.in/",date))
                 .thenReturn(savedShorturl);
 
         mockMvc.perform(post("/api/v1/short-urls")
